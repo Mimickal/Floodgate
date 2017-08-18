@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "floodgate",
+  "name": "Floodgate",
+  "description": "A few mods (such as IC2) add pumps that suck up liquids, but BuildCraft is the only mod I've seen that has a way to place liquids back into the world. This small mod adds a single block that offers that functionality.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Mimickal"],
+  "credits": "Mia and whoever else helps me test this.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
