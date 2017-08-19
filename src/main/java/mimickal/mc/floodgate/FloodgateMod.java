@@ -3,6 +3,7 @@ package mimickal.mc.floodgate;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 @Mod(
@@ -15,7 +16,15 @@ public class FloodgateMod {
     public static final String MODID = "floodgate";
     public static final String NAME = "Floodgate";
     public static final String VERSION = "1.10.2-1.0.0";
-    
+
+    @SidedProxy(
+            serverSide = "mimickal.mc.floodgate.CommonProxy",
+            clientSide = "mimickal.mc.floodgate.ClientProxy"
+    )
+    public static CommonProxy proxy;
+
+    public static BlockFloodgate floodgate;
+
     @EventHandler
     public void init(FMLInitializationEvent event) {
         // some example code
