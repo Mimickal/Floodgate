@@ -1,5 +1,4 @@
-[
-{
+[{
   "modid": "floodgate",
   "name": "Floodgate",
   "description": "A few mods (such as IC2) add pumps that suck up liquids, but BuildCraft is the only mod I've seen that has a way to place liquids back into the world. This small mod adds a single block that offers that functionality.",
@@ -12,5 +11,4 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
-}
-]
+}]

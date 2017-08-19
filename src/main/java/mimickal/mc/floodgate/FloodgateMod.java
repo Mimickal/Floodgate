@@ -11,15 +11,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
         version = FloodgateMod.VERSION,
         acceptedMinecraftVersions = "[1.10.2]"
 )
-public class FloodgateMod
-{
+public class FloodgateMod {
     public static final String MODID = "floodgate";
     public static final String NAME = "Floodgate";
     public static final String VERSION = "1.10.2-1.0.0";
     
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         // some example code
         System.out.println("DIRT BLOCK >> "+Blocks.DIRT.getUnlocalizedName());
     }
