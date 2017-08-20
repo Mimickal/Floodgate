@@ -1,6 +1,12 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "blocks/iron_block"
+    "particle": "floodgate:floodgate_grate",
+    "up": "floodgate:floodgate_top",
+    "down": "floodgate:floodgate_grate",
+    "north": "floodgate:floodgate_grate",
+    "south": "floodgate:floodgate_grate",
+    "east": "floodgate:floodgate_grate",
+    "west": "floodgate:floodgate_grate"
   }
 }
