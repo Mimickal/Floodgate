@@ -1,7 +1,9 @@
 package mimickal.mc.floodgate;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -37,13 +39,15 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      * This is what the floodgate does when the offered fluid is actually
      * consumed.
      *
-     * @param resource The fluid filling the floodgate
+     * @param fluid The fluid filling the floodgate
      * @return The amount of fluid the floodgate accepted
      */
     @Override
-    public int fill(FluidStack resource) {
-        int amountFilled = Math.min(resource.amount, MAX_CAPACITY);
-        heldFluid = new FluidStack(resource, amountFilled);
+    public int fill(FluidStack fluid) {
+        int amountFilled = Math.min(fluid.amount, MAX_CAPACITY);
+        // TODO check that we have enough fluid to place a source block
+        heldFluid = new FluidStack(fluid, amountFilled);
+        placeFluid(fluid);
         return amountFilled;
     }
 
@@ -85,6 +89,21 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     @Override
     public List<ITankInfoWrapper> getTankInfoWrappers() {
         return new ArrayList<>();
+    }
+
+    /*-----------------------------------------------------------------------*
+     * Fluid placing logic
+     *-----------------------------------------------------------------------*/
+
+    private void placeFluid(FluidStack fluid) {
+        BlockPos placeAt = findNearestFreeSpot();
+        Block fluidSourceBlock = fluid.getFluid().getBlock();
+        this.worldObj.setBlockState(placeAt, fluidSourceBlock.getDefaultState());
+    }
+
+    private BlockPos findNearestFreeSpot() {
+        BlockPos testPos = this.pos.down();
+        return testPos;
     }
 
 }
