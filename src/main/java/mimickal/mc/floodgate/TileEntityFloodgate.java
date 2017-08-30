@@ -4,6 +4,7 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
-    public static final int MAX_CAPACITY = 1000;
+    public static final int MAX_CAPACITY = Fluid.BUCKET_VOLUME;
 
     private FluidStack heldFluid;
 
@@ -116,6 +117,7 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         } else {
             return null;
         }
+        //this.worldObj.getBlockState(testPos).getBlock().
     }
 
 }
