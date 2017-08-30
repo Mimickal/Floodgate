@@ -47,8 +47,15 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         int amountFilled = Math.min(fluid.amount, MAX_CAPACITY);
         // TODO check that we have enough fluid to place a source block
         heldFluid = new FluidStack(fluid, amountFilled);
-        placeFluid(fluid);
-        return amountFilled;
+
+        BlockPos placeAt = findNearestFreeSpot();
+
+        if (placeAt == null) {
+            return 0; // Don't actually consume fluid if we can't find a place to put it
+        } else {
+            placeFluid(fluid, placeAt);
+            return amountFilled;
+        }
     }
 
     /**
@@ -95,15 +102,20 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      * Fluid placing logic
      *-----------------------------------------------------------------------*/
 
-    private void placeFluid(FluidStack fluid) {
-        BlockPos placeAt = findNearestFreeSpot();
+    private void placeFluid(FluidStack fluid, BlockPos placeAt) {
         Block fluidSourceBlock = fluid.getFluid().getBlock();
         this.worldObj.setBlockState(placeAt, fluidSourceBlock.getDefaultState());
     }
 
+    @Nullable
     private BlockPos findNearestFreeSpot() {
         BlockPos testPos = this.pos.down();
-        return testPos;
+
+        if (this.worldObj.isAirBlock(testPos)) {
+            return testPos;
+        } else {
+            return null;
+        }
     }
 
 }
