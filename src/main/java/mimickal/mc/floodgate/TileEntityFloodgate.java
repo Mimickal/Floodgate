@@ -40,23 +40,34 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      * This is what the floodgate does when the offered fluid is actually
      * consumed.
      *
-     * @param fluid The fluid filling the floodgate
+     * @param incomingFluid The fluid filling the floodgate
      * @return The amount of fluid the floodgate accepted
      */
     @Override
-    public int fill(FluidStack fluid) {
-        int amountFilled = Math.min(fluid.amount, MAX_CAPACITY);
-        // TODO check that we have enough fluid to place a source block
-        heldFluid = new FluidStack(fluid, amountFilled);
+    public int fill(FluidStack incomingFluid) {
+        int amountFilled;
 
-        BlockPos placeAt = findNearestFreeSpot();
-
-        if (placeAt == null) {
-            return 0; // Don't actually consume fluid if we can't find a place to put it
-        } else {
-            placeFluid(fluid, placeAt);
-            return amountFilled;
+        // Attempt to consume enough fluid to hit MAX_CAPACITY
+        if (heldFluid == null) {
+            amountFilled = Math.min(incomingFluid.amount, MAX_CAPACITY);
+            heldFluid = new FluidStack(incomingFluid, amountFilled);
         }
+        else {
+            if (heldFluid.amount + incomingFluid.amount >= MAX_CAPACITY) {
+                amountFilled = MAX_CAPACITY - heldFluid.amount;
+            } else {
+                amountFilled = incomingFluid.amount;
+            }
+
+            heldFluid = new FluidStack(incomingFluid, heldFluid.amount + amountFilled);
+        }
+
+        // When we have a full tank, attempt to place a fluid source block
+        if (heldFluid.amount == MAX_CAPACITY) {
+            placeHeldFluid();
+        }
+
+        return amountFilled;
     }
 
     /**
@@ -103,9 +114,17 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      * Fluid placing logic
      *-----------------------------------------------------------------------*/
 
-    private void placeFluid(FluidStack fluid, BlockPos placeAt) {
-        Block fluidSourceBlock = fluid.getFluid().getBlock();
-        this.worldObj.setBlockState(placeAt, fluidSourceBlock.getDefaultState());
+    private void placeHeldFluid() {
+        BlockPos nearestFreeSpot = findNearestFreeSpot();
+
+        if (nearestFreeSpot != null) {
+            // Fill free spot with fluid source block
+            Block fluidSourceBlock = heldFluid.getFluid().getBlock();
+            this.worldObj.setBlockState(nearestFreeSpot, fluidSourceBlock.getDefaultState());
+
+            // "Empty" the tank
+            heldFluid = null;
+        }
     }
 
     @Nullable
