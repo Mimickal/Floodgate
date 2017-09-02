@@ -23,17 +23,15 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      *-----------------------------------------------------------------------*/
 
     /**
-     * This is called prior to moving any fluid. I assume this is used to
-     * determine how much of a fluid the floodgate should be allowed to
-     * accept (if any).
+     * This is called prior to moving any fluid.
+     * The return value doesn't seem to be used for anything.
      *
      * @param resource The fluid being offered to the floodgate
-     * @return How much of the fluid the floodgate can accept (maybe?)
+     * @return nothing?
      */
     @Override
     public int offer(FluidStack resource) {
-        // TODO eventually make sure this fluid is usable (i.e. does it have source blocks we can place?)
-        return MAX_CAPACITY;
+        return 0;
     }
 
     /**
@@ -44,13 +42,19 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      * @return The amount of fluid the floodgate accepted
      */
     @Override
-    public int fill(FluidStack incomingFluid) {
+    public synchronized int fill(FluidStack incomingFluid) {
+
+        //FIXME only accept full buckets of fluid. Anything else is a hassle to work with.
+
         int amountFilled;
 
         // Attempt to consume enough fluid to hit MAX_CAPACITY
         if (heldFluid == null) {
             amountFilled = Math.min(incomingFluid.amount, MAX_CAPACITY);
             heldFluid = new FluidStack(incomingFluid, amountFilled);
+        }
+        else if (!heldFluid.isFluidEqual(incomingFluid)) {
+            amountFilled = 0;
         }
         else {
             if (heldFluid.amount + incomingFluid.amount >= MAX_CAPACITY) {
@@ -123,7 +127,7 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
             this.worldObj.setBlockState(nearestFreeSpot, fluidSourceBlock.getDefaultState());
 
             // "Empty" the tank
-            heldFluid = null;
+            heldFluid = new FluidStack(heldFluid, 0);
         }
     }
 
