@@ -2,8 +2,6 @@ package mimickal.mc.floodgate;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
@@ -132,48 +130,8 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
     @Nullable
     private BlockPos findNextFillSpot() {
-        // FIXME remember to count steps and not exceed search distance!
-        int steps = 0;
-        Stack<BlockPos> dropPositions = new Stack<>();
-
-        BlockPos currentPos = this.pos.down();
-
-        if (testSpot(currentPos) == SpotType.FREE) {
-            return currentPos;
-        } else {
-            return null;
-        }
-    }
-
-    private SpotType testSpot(BlockPos position) {
-        IBlockState blockState = this.worldObj.getBlockState(position);
-
-        if (this.worldObj.isAirBlock(position)) {
-            return SpotType.FREE;
-        } else if (matchesHeldFluid(blockState)) {
-            if (isSourceBlock(blockState)) {
-                return SpotType.SOURCE;
-            } else {
-                return SpotType.FREE;
-            }
-        } else {
-            return SpotType.WALL;
-        }
-    }
-
-    // Assumes incoming IBlockState belongs to a fluid
-    private boolean isSourceBlock(IBlockState fluidState) {
-        return fluidState.getBlock().getMetaFromState(fluidState) == 0;
-    }
-
-    private boolean matchesHeldFluid(IBlockState fluidState) {
-        Material incomingFluidMaterial = fluidState.getBlock().getDefaultState().getMaterial();
-        Material heldFluidMaterial = heldFluid.getFluid().getBlock().getDefaultState().getMaterial();
-        return incomingFluidMaterial == heldFluidMaterial;
-    }
-
-    private enum SpotType {
-        FREE, SOURCE, WALL
+        // TODO use search helper here
+        return null;
     }
 
 }
