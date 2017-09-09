@@ -130,8 +130,9 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
     @Nullable
     private BlockPos findNextFillSpot() {
-        // TODO use search helper here
-        return null;
+        FloodgateSearchHelper searchHelper = new FloodgateSearchHelper(this.pos, heldFluid, this.worldObj);
+        BlockPos pos = searchHelper.nextSpot();
+        return pos;
     }
 
 }
