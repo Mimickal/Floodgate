@@ -186,22 +186,15 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         return incomingFluidMaterial == heldFluidMaterial;
     }
 
-    // See http://www.minecraftforge.net/forum/topic/36963-1710-check-if-block-is-fluid-source-block/
     private boolean isFluidFlowing(BlockPos testedPos) {
         Block testedBlock = this.worldObj.getBlockState(testedPos).getBlock();
 
-        // Vanilla fluids extend BlockLiquid.
-        // In vanilla, a fluid meta of 0 means it's a source block.
-        if (testedBlock instanceof BlockLiquid) {
-            // Yes, this is horrible and should be a build-in function
+        // A block meta of 0 means it's a source block.
+        // Vanilla fluids extend BlockLiquid. Mod fluids implement IFluidBlock.
+        // Yes, this is horrible and should be a build-in function.
+        if (testedBlock instanceof BlockLiquid || testedBlock instanceof IFluidBlock) {
             int meta = testedBlock.getMetaFromState(this.worldObj.getBlockState(testedPos));
             return meta != 0;
-        }
-
-        // Mod fluids implement IFluidBlock.
-        if (testedBlock instanceof IFluidBlock) {
-            // TODO implement
-            throw new NotImplementedException();
         }
 
         return false;
