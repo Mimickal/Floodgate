@@ -2,13 +2,15 @@ package mimickal.mc.floodgate;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -160,10 +162,13 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
                 if (this.worldObj.isAirBlock(nextSpot)) {
                     return nextSpot;
                 }
-                else if (
-                    matchesHeldFluid(this.worldObj.getBlockState(nextSpot)) &&
-                    !visited.contains(nextSpot)
-                ) {
+                else if (matchesHeldFluid(nextSpot) && !visited.contains(nextSpot)) {
+
+                    // Fluid flows only through air, so treat flowing fluid as air.
+                    if (isFluidFlowing(nextSpot)) {
+                        return nextSpot;
+                    }
+
                     searching.push(curSpot);
                     searching.push(new SearchState(nextSpot));
                     visited.add(nextSpot);
@@ -175,11 +180,31 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         return null;
     }
 
-    // FIXME match on source blocks only, not flowing fluid
-    private boolean matchesHeldFluid(IBlockState fluidState) {
-        Material incomingFluidMaterial = fluidState.getBlock().getDefaultState().getMaterial();
+    private boolean matchesHeldFluid(BlockPos testedPos) {
+        Material incomingFluidMaterial = this.worldObj.getBlockState(testedPos).getBlock().getDefaultState().getMaterial();
         Material heldFluidMaterial = this.heldFluid.getFluid().getBlock().getDefaultState().getMaterial();
         return incomingFluidMaterial == heldFluidMaterial;
+    }
+
+    // See http://www.minecraftforge.net/forum/topic/36963-1710-check-if-block-is-fluid-source-block/
+    private boolean isFluidFlowing(BlockPos testedPos) {
+        Block testedBlock = this.worldObj.getBlockState(testedPos).getBlock();
+
+        // Vanilla fluids extend BlockLiquid.
+        // In vanilla, a fluid meta of 0 means it's a source block.
+        if (testedBlock instanceof BlockLiquid) {
+            // Yes, this is horrible and should be a build-in function
+            int meta = testedBlock.getMetaFromState(this.worldObj.getBlockState(testedPos));
+            return meta != 0;
+        }
+
+        // Mod fluids implement IFluidBlock.
+        if (testedBlock instanceof IFluidBlock) {
+            // TODO implement
+            throw new NotImplementedException();
+        }
+
+        return false;
     }
 
     /**
