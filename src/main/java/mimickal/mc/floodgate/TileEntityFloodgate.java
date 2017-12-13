@@ -47,6 +47,10 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      */
     @Override
     public synchronized int fill(FluidStack incomingFluid) {
+        if (!incomingFluid.getFluid().canBePlacedInWorld()) {
+            return 0;
+        }
+
         int amountFilled;
 
         // Attempt to consume enough fluid to hit MAX_CAPACITY
