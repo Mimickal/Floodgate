@@ -2,15 +2,17 @@ package mimickal.mc.floodgate;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
@@ -128,11 +130,82 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         }
     }
 
+    /**
+     * This algorithm performs a depth-first-search to the nearest air block
+     * that is connected through matching fluid source blocks. It allows an
+     * arbitrary volume to be filled with fluid source blocks. By searching
+     * depth-first, the volume should appear (to players) to fill naturally.
+     *
+     * A list of visited spaces is maintained to avoid circular loops.
+     * A stack is used to achieve the depth-first part of the search.
+     *
+     * Everything is thrown out between runs to accommodate for dynamically
+     * changing volumes.
+     *
+     * @return next air block or null (if no air block found)
+     */
     @Nullable
     private BlockPos findNextFillSpot() {
-        FloodgateSearchHelper searchHelper = new FloodgateSearchHelper(this.pos, heldFluid, this.worldObj);
-        BlockPos pos = searchHelper.nextSpot();
-        return pos;
+        List<BlockPos> visited = new ArrayList<>();
+        Stack<SearchState> searching = new Stack<>();
+
+        searching.push(new SearchState(this.pos));
+
+        search_next_spot:
+        while (searching.size() > 0) {
+            SearchState curSpot = searching.pop();
+            BlockPos nextSpot;
+
+            while ((nextSpot = curSpot.nextAdjBlock()) != null) {
+                if (this.worldObj.isAirBlock(nextSpot)) {
+                    return nextSpot;
+                }
+                else if (
+                    matchesHeldFluid(this.worldObj.getBlockState(nextSpot)) &&
+                    !visited.contains(nextSpot)
+                ) {
+                    searching.push(curSpot);
+                    searching.push(new SearchState(nextSpot));
+                    visited.add(nextSpot);
+                    continue search_next_spot;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // FIXME match on source blocks only, not flowing fluid
+    private boolean matchesHeldFluid(IBlockState fluidState) {
+        Material incomingFluidMaterial = fluidState.getBlock().getDefaultState().getMaterial();
+        Material heldFluidMaterial = this.heldFluid.getFluid().getBlock().getDefaultState().getMaterial();
+        return incomingFluidMaterial == heldFluidMaterial;
+    }
+
+    /**
+     * This class encapsulates the concept of searching around a block.
+     * Encapsulating this data allows us to save the search state at each block.
+     */
+    private class SearchState {
+        private Queue<EnumFacing> directions;
+        private BlockPos blockPos;
+
+        private SearchState(BlockPos pos) {
+            this.blockPos = pos;
+            directions = new LinkedList<>(Arrays.asList(
+                EnumFacing.DOWN,
+                EnumFacing.NORTH,
+                EnumFacing.SOUTH,
+                EnumFacing.EAST,
+                EnumFacing.WEST
+            ));
+        }
+
+        @Nullable
+        private BlockPos nextAdjBlock() {
+            EnumFacing searchDir = this.directions.poll();
+            return searchDir == null ? null : this.blockPos.offset(searchDir);
+        }
     }
 
 }
