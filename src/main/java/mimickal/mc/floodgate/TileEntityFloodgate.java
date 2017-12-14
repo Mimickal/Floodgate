@@ -59,7 +59,7 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
             heldFluid = new FluidStack(incomingFluid, amountFilled);
         }
         else if (!heldFluid.isFluidEqual(incomingFluid)) {
-            amountFilled = 0;
+            return 0;
         }
         else {
             if (heldFluid.amount + incomingFluid.amount >= MAX_CAPACITY) {
