@@ -1,11 +1,15 @@
 package mimickal.mc.floodgate;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 @Mod(
         modid = FloodgateMod.MOD_ID,
@@ -32,6 +36,7 @@ public class FloodgateMod {
         System.out.println("Loading Floodgate");
         initFloodgateBlock();
         initFloodgateTileEntity();
+        initFloodgateRecipe();
     }
 
     private void initFloodgateBlock() {
@@ -49,6 +54,16 @@ public class FloodgateMod {
 
     private void initFloodgateTileEntity() {
         GameRegistry.registerTileEntity(TileEntityFloodgate.class, MOD_ID + "_tile_entity");
+    }
+
+    private void initFloodgateRecipe() {
+        GameRegistry.addRecipe(new ShapedOreRecipe(floodgate,
+            "III",
+            "B B",
+            "IBI",
+            'I', Items.IRON_INGOT,
+            'B', Blocks.IRON_BARS
+        ));
     }
 
 }
