@@ -19,6 +19,7 @@ import java.util.*;
 public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
     private static final int MAX_CAPACITY = Fluid.BUCKET_VOLUME;
+    private static final int RANGE = 16; // How far we're allowed to place source blocks
 
     private FluidStack heldFluid;
 
@@ -163,20 +164,24 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
             BlockPos nextSpot;
 
             while ((nextSpot = curSpot.nextAdjBlock()) != null) {
-                if (this.worldObj.isAirBlock(nextSpot)) {
-                    return nextSpot;
-                }
-                else if (matchesHeldFluid(nextSpot) && !visited.contains(nextSpot)) {
 
-                    // Fluid flows only through air, so treat flowing fluid as air.
-                    if (isFluidFlowing(nextSpot)) {
+                // Prevent us from flooding the universe
+                if (inRange(nextSpot)) {
+                    if (this.worldObj.isAirBlock(nextSpot)) {
                         return nextSpot;
                     }
+                    else if (matchesHeldFluid(nextSpot) && !visited.contains(nextSpot)) {
 
-                    searching.push(curSpot);
-                    searching.push(new SearchState(nextSpot));
-                    visited.add(nextSpot);
-                    continue search_next_spot;
+                        // Fluid flows only through air, so treat flowing fluid as air.
+                        if (isFluidFlowing(nextSpot)) {
+                            return nextSpot;
+                        }
+
+                        searching.push(curSpot);
+                        searching.push(new SearchState(nextSpot));
+                        visited.add(nextSpot);
+                        continue search_next_spot;
+                    }
                 }
             }
         }
@@ -188,6 +193,12 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         Material incomingFluidMaterial = this.worldObj.getBlockState(testedPos).getBlock().getDefaultState().getMaterial();
         Material heldFluidMaterial = this.heldFluid.getFluid().getBlock().getDefaultState().getMaterial();
         return incomingFluidMaterial == heldFluidMaterial;
+    }
+
+    private boolean inRange(BlockPos otherPos) {
+        return  Math.abs(pos.getX() - otherPos.getX()) <= RANGE &&
+                Math.abs(pos.getY() - otherPos.getY()) <= RANGE &&
+                Math.abs(pos.getZ() - otherPos.getZ()) <= RANGE;
     }
 
     private boolean isFluidFlowing(BlockPos testedPos) {
