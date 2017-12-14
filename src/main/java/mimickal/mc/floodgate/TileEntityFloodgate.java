@@ -19,7 +19,6 @@ import java.util.*;
 public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
     private static final int MAX_CAPACITY = Fluid.BUCKET_VOLUME;
-    private static final int RANGE = 16; // How far we're allowed to place source blocks
 
     private FluidStack heldFluid;
 
@@ -196,9 +195,9 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     }
 
     private boolean inRange(BlockPos otherPos) {
-        return  Math.abs(pos.getX() - otherPos.getX()) <= RANGE &&
-                Math.abs(pos.getY() - otherPos.getY()) <= RANGE &&
-                Math.abs(pos.getZ() - otherPos.getZ()) <= RANGE;
+        return  Math.abs(pos.getX() - otherPos.getX()) <= Config.RANGE &&
+                Math.abs(pos.getY() - otherPos.getY()) <= Config.RANGE &&
+                Math.abs(pos.getZ() - otherPos.getZ()) <= Config.RANGE;
     }
 
     private boolean isFluidFlowing(BlockPos testedPos) {

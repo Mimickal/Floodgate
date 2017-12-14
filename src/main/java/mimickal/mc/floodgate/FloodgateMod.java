@@ -37,6 +37,7 @@ public class FloodgateMod {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         LOGGER.info("Loading " + NAME);
+        Config.load();
         initFloodgateBlock();
         initFloodgateTileEntity();
         initFloodgateRecipe();
