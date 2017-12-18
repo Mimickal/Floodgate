@@ -1,14 +1,14 @@
 [{
   "modid": "floodgate",
   "name": "Floodgate",
-  "description": "A few mods (such as IC2) add pumps that suck up liquids, but BuildCraft is the only mod I've seen that has a way to place liquids back into the world. This small mod adds a single block that offers that functionality.",
+  "description": "Adds a floodgate that can fill arbitrary volumes with fluid source blocks. Intended to replace the floodgate from BuildCraft, which skipped Minecraft 1.10.2. Depends on EnderCore, since EnderIO has fluid pipes (and a 1.10.2 release).",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Mimickal"],
-  "credits": "Mia and whoever else helps me test this.",
+  "credits": "Mia and whoever else helps me test this. Also the EnderIO team for not skipping 1.10.2.",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["EnderCore 0.4.1.66-beta or above"]
 }]

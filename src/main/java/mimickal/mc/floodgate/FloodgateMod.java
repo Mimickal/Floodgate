@@ -17,7 +17,8 @@ import org.apache.logging.log4j.Logger;
         modid = FloodgateMod.MOD_ID,
         name = FloodgateMod.NAME,
         version = FloodgateMod.VERSION,
-        acceptedMinecraftVersions = "[1.10.2]"
+        acceptedMinecraftVersions = "[1.10.2]",
+        dependencies = "required-after:endercore@[0.4.1.66-beta,)"
 )
 public class FloodgateMod {
 
