@@ -1,5 +1,6 @@
 package mimickal.mc.floodgate;
 
+import com.sun.scenario.effect.Flood;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -28,6 +29,9 @@ public class FloodgateMod {
     public static final String VERSION = "1.10.2-1.0.0";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
+    @Mod.Instance(FloodgateMod.MOD_ID)
+    public static FloodgateMod instance;
+
     @SidedProxy(
             serverSide = "mimickal.mc.floodgate.CommonProxy",
             clientSide = "mimickal.mc.floodgate.ClientProxy"
@@ -38,11 +42,12 @@ public class FloodgateMod {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        proxy.init();
         LOGGER.info("Loading " + NAME);
         Config.load();
         initFloodgateBlock();
-        initFloodgateTileEntity();
         initFloodgateRecipe();
+        proxy.registerTileEntities();
     }
 
     private void initFloodgateBlock() {
@@ -56,10 +61,6 @@ public class FloodgateMod {
         proxy.registerItemRenderer(itemBlock, 0, BlockFloodgate.NAME);
 
         floodgate = block;
-    }
-
-    private void initFloodgateTileEntity() {
-        GameRegistry.registerTileEntity(TileEntityFloodgate.class, MOD_ID + "_tile_entity");
     }
 
     private void initFloodgateRecipe() {

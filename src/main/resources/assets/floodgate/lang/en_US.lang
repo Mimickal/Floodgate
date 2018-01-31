@@ -1,1 +1,4 @@
 tile.floodgate.name=Floodgate
+container.floodgate=Floodgate
+
+gui.block_breaker.enchanted_book.tooltip=Enchanted book goes here

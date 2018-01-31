@@ -1,9 +1,11 @@
 package mimickal.mc.floodgate;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
+import mimickal.mc.floodgate.client.gui.GuiFloodgate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -237,6 +239,19 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
             EnumFacing searchDir = this.directions.poll();
             return searchDir == null ? null : this.blockPos.offset(searchDir);
         }
+    }
+
+    /**
+     * Says whether the player can interact with the block - used for our
+     * {@link GuiFloodgate}
+     *
+     * @param player
+     *            The player to test
+     * @return If the player can interact with the block
+     */
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.worldObj.getTileEntity(this.getPos()) == this
+                && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
     }
 
 }
