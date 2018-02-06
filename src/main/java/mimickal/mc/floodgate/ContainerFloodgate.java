@@ -17,6 +17,8 @@ public class ContainerFloodgate extends Container {
         System.out.println("\u001B[31m"+"new floodgate block"+"\u001B[0m");
         this.te = te;
         this.handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+        /*
         //Our tile entity slots
         this.addSlotToContainer(new SlotItemHandler(handler, 0, 62, 17));
         this.addSlotToContainer(new SlotItemHandler(handler, 1, 80, 17));
@@ -43,6 +45,7 @@ public class ContainerFloodgate extends Container {
         for (int x = 0; x < 9; ++x) {
             this.addSlotToContainer(new Slot(playerInv, x, xPos + x * 18, yPos + 58));
         }
+        */
     }
 
     /**
