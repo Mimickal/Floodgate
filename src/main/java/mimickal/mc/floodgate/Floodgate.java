@@ -1,18 +1,14 @@
 package mimickal.mc.floodgate;
 
-import mimickal.mc.floodgate.block.BlockFloodgate;
+import mimickal.mc.floodgate.handler.RecipeHandler;
+import mimickal.mc.floodgate.init.ModBlocks;
 import mimickal.mc.floodgate.proxy.CommonProxy;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,14 +34,18 @@ public class Floodgate {
     @SidedProxy(serverSide = Reference.SERVER_PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
     public static CommonProxy proxy;
 
-    public static BlockFloodgate floodgate;
-
     /**
      * Called first. Should initialize everything and register everything
      * @param event The event (you probably wont use this)
      */
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        ModBlocks.init();
+        ModBlocks.register();
+
+        proxy.preInit(event);
+        proxy.registerRenders();
+        proxy.registerTileEntities();
     }
 
     /**
@@ -54,36 +54,13 @@ public class Floodgate {
      */
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.init();
         LOGGER.info("Loading " + Reference.NAME);
+        proxy.init(event);
         Config.load();
-        initFloodgateBlock();
-        initFloodgateRecipe();
-        proxy.registerTileEntities();
+
+        RecipeHandler.registerCraftingRecipes();
     }
 
-    private void initFloodgateBlock() {
-        BlockFloodgate block = new BlockFloodgate();
-
-        ItemBlock itemBlock = new ItemBlock(block);
-        itemBlock.setRegistryName(block.getRegistryName());
-
-        GameRegistry.register(block);
-        GameRegistry.register(itemBlock);
-        proxy.registerItemRenderer(itemBlock, 0, BlockFloodgate.NAME);
-
-        floodgate = block;
-    }
-
-    private void initFloodgateRecipe() {
-        GameRegistry.addRecipe(new ShapedOreRecipe(floodgate,
-            "III",
-            "B B",
-            "IBI",
-            'I', Items.IRON_INGOT,
-            'B', Blocks.IRON_BARS
-        ));
-    }
 
     /**
      * Called after everything. Should be used for mod integration
@@ -91,6 +68,7 @@ public class Floodgate {
      */
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        proxy.postInit(event);
     }
 
 }

@@ -27,13 +27,11 @@ public class GuiFloodgate extends GuiContainer {
         setGuiSize(176, 166);
     }
 
-
     /**
      * Where we add our gui elements
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        System.out.println("\u001B[31m"+"drawGuiContainerBackgroundLayer"+"\u001B[0m");
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(
                 new ResourceLocation(Reference.MOD_ID, "textures/gui/container/floodgate.png")
@@ -42,24 +40,22 @@ public class GuiFloodgate extends GuiContainer {
     }
 
     /**
-     * Draws the text that is an overlay, i.e where it says Block Breaker in the
-     * gui on the top
+     * Draws the text that is an overlay
      */
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        System.out.println("\u001B[31m"+"drawGuiContainerBackgroundLayer"+"\u001B[0m");
 
-        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
-        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
-
-        if (isPointInRegion(134, 17, 18, 18, mouseX, mouseY)
-                && te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
-                .getStackInSlot(9) == null) {
-            List<String> text = new ArrayList<String>();
-            text.add(TextFormatting.GRAY + I18n.format("gui.block_breaker.enchanted_book.tooltip"));
-            this.drawHoveringText(text, actualMouseX, actualMouseY);
-        }
+//        int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
+//        int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
+//
+//        if (isPointInRegion(134, 17, 18, 18, mouseX, mouseY)
+//                && te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+//                .getStackInSlot(9) == null) {
+//            List<String> text = new ArrayList<String>();
+//            text.add(TextFormatting.GRAY + I18n.format("gui.block_breaker.enchanted_book.tooltip"));
+//            this.drawHoveringText(text, actualMouseX, actualMouseY);
+//        }
     }
 
 

@@ -4,20 +4,34 @@ import mimickal.mc.floodgate.Floodgate;
 import mimickal.mc.floodgate.Reference;
 import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
 
-    public void init() {
-        // Noop on server
+    public void preInit(FMLPreInitializationEvent e) {
+
     }
 
-    public void registerItemRenderer(Item item, int meta, String id) {
-        // Noop on server
+    public void init(FMLInitializationEvent e) {
+
+    }
+
+    public void postInit(FMLPostInitializationEvent e) {
+
     }
 
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityFloodgate.class, Reference.MOD_ID + ":floodgate");
     }
 
+    /**
+     * Registers the renders - refer to the
+     * {@link ClientProxy#registerRenders()}
+     */
+    public void registerRenders() {
+
+    }
 }
