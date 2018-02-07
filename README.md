@@ -10,6 +10,6 @@ Several mods add pumps that can suck up fluid source blocks (like IC2), but Buil
 
 This mod depends on EnderCore 0.4.1.66-beta (or above), since it's intended to work with EnderIO's fluid conduits.
 
-#####Development Setup Guide
+##### Development Setup Guide
 https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/mapping-and-modding-tutorials/2714237-forge-1-11-1-10-setting-up-mod-environment-with
-Note: If the generated run scripts don't work, use the "runClient" gradle task found under "forgegradle"
+Note: If the generated run scripts don't work, use the "runClient" gradle task found under "forgegradle" tasks

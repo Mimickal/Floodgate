@@ -9,9 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,6 +25,13 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     private static final int MAX_CAPACITY = Fluid.BUCKET_VOLUME;
 
     private FluidStack heldFluid;
+
+    private ItemStackHandler handler;
+
+    public TileEntityFloodgate() {
+        super();
+        this.handler = new ItemStackHandler(10);
+    }
 
     /*-----------------------------------------------------------------------*
      * IFluidWrapper impl
@@ -112,7 +122,6 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     /**
      * FIXME figure out what this actually does
      * Seriously I have no idea.
-     * @return
      */
     @Nonnull
     @Override
@@ -239,6 +248,26 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
             EnumFacing searchDir = this.directions.poll();
             return searchDir == null ? null : this.blockPos.offset(searchDir);
         }
+    }
+
+    /**
+     * Get all of the capabilities
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return (T) this.handler;
+        return super.getCapability(capability, facing);
+    }
+
+    /**
+     * Say which capabilities the {@link TileEntity} has
+     */
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) ||
+            super.hasCapability(capability, facing);
     }
 
     /**

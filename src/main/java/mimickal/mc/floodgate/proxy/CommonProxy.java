@@ -1,5 +1,7 @@
-package mimickal.mc.floodgate;
+package mimickal.mc.floodgate.proxy;
 
+import mimickal.mc.floodgate.FloodgateMod;
+import mimickal.mc.floodgate.TileEntityFloodgate;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

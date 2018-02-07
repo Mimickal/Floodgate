@@ -1,6 +1,6 @@
 package mimickal.mc.floodgate;
 
-import com.sun.scenario.effect.Flood;
+import mimickal.mc.floodgate.proxy.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,8 +32,8 @@ public class FloodgateMod {
     public static FloodgateMod instance;
 
     @SidedProxy(
-            serverSide = "mimickal.mc.floodgate.CommonProxy",
-            clientSide = "mimickal.mc.floodgate.ClientProxy"
+            serverSide = "mimickal.mc.floodgate.proxy.CommonProxy",
+            clientSide = "mimickal.mc.floodgate.proxy.ClientProxy"
     )
     public static CommonProxy proxy;
 

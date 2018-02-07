@@ -1,5 +1,6 @@
-package mimickal.mc.floodgate;
+package mimickal.mc.floodgate.proxy;
 
+import mimickal.mc.floodgate.FloodgateMod;
 import mimickal.mc.floodgate.client.gui.GuiHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
