@@ -1,5 +1,6 @@
-package mimickal.mc.floodgate;
+package mimickal.mc.floodgate.container;
 
+import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;

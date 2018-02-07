@@ -1,7 +1,8 @@
 package mimickal.mc.floodgate.proxy;
 
-import mimickal.mc.floodgate.FloodgateMod;
-import mimickal.mc.floodgate.TileEntityFloodgate;
+import mimickal.mc.floodgate.Floodgate;
+import mimickal.mc.floodgate.Reference;
+import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -16,7 +17,7 @@ public class CommonProxy {
     }
 
     public void registerTileEntities() {
-        GameRegistry.registerTileEntity(TileEntityFloodgate.class, FloodgateMod.MOD_ID + ":floodgate");
+        GameRegistry.registerTileEntity(TileEntityFloodgate.class, Reference.MOD_ID + ":floodgate");
     }
 
 }

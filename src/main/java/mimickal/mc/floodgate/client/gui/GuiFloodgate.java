@@ -1,14 +1,14 @@
 package mimickal.mc.floodgate.client.gui;
 
-import mimickal.mc.floodgate.ContainerFloodgate;
-import mimickal.mc.floodgate.TileEntityFloodgate;
+import mimickal.mc.floodgate.Floodgate;
+import mimickal.mc.floodgate.Reference;
+import mimickal.mc.floodgate.container.ContainerFloodgate;
+import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import mimickal.mc.floodgate.FloodgateMod;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -36,7 +36,7 @@ public class GuiFloodgate extends GuiContainer {
         System.out.println("\u001B[31m"+"drawGuiContainerBackgroundLayer"+"\u001B[0m");
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(
-                new ResourceLocation(FloodgateMod.MOD_ID, "textures/gui/container/floodgate.png")
+                new ResourceLocation(Reference.MOD_ID, "textures/gui/container/floodgate.png")
         );
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
     }

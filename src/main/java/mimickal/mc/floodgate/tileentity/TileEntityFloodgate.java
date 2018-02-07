@@ -1,6 +1,7 @@
-package mimickal.mc.floodgate;
+package mimickal.mc.floodgate.tileentity;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
+import mimickal.mc.floodgate.Config;
 import mimickal.mc.floodgate.client.gui.GuiFloodgate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;

@@ -1,7 +1,7 @@
 package mimickal.mc.floodgate.client.gui;
 
-import mimickal.mc.floodgate.ContainerFloodgate;
-import mimickal.mc.floodgate.TileEntityFloodgate;
+import mimickal.mc.floodgate.container.ContainerFloodgate;
+import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

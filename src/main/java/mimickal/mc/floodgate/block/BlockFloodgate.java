@@ -1,5 +1,7 @@
-package mimickal.mc.floodgate;
+package mimickal.mc.floodgate.block;
 
+import mimickal.mc.floodgate.Floodgate;
+import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import mimickal.mc.floodgate.client.gui.GuiHandler;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -43,7 +45,7 @@ public class BlockFloodgate extends BlockContainer {
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(!worldIn.isRemote) {
-            playerIn.openGui(FloodgateMod.instance, GuiHandler.Floodgate, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            playerIn.openGui(Floodgate.instance, GuiHandler.Floodgate, worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }

@@ -1,5 +1,6 @@
 package mimickal.mc.floodgate;
 
+import mimickal.mc.floodgate.block.BlockFloodgate;
 import mimickal.mc.floodgate.proxy.CommonProxy;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -8,41 +9,53 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
-        modid = FloodgateMod.MOD_ID,
-        name = FloodgateMod.NAME,
-        version = FloodgateMod.VERSION,
+        modid = Reference.MOD_ID,
+        name = Reference.NAME,
+        version = Reference.VERSION,
         acceptedMinecraftVersions = "[1.10.2]",
         dependencies = "required-after:endercore@[0.4.1.66-beta,)"
 )
-public class FloodgateMod {
+public class Floodgate {
 
-    // NOTE: Info duplicated in mcmod.info and build.gradle
-    public static final String MOD_ID = "floodgate";
-    public static final String NAME = "Floodgate";
-    public static final String VERSION = "1.10.2-1.0.0";
-    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+    public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_ID);
 
-    @Mod.Instance(FloodgateMod.MOD_ID)
-    public static FloodgateMod instance;
+    @Mod.Instance(Reference.MOD_ID)
+    public static Floodgate instance;
 
-    @SidedProxy(
-            serverSide = "mimickal.mc.floodgate.proxy.CommonProxy",
-            clientSide = "mimickal.mc.floodgate.proxy.ClientProxy"
-    )
+    /**
+     * Proxy so that we register the correct things on server and client side.
+     * Client side handles the model bakery Server side handles tile entities
+     * and world generation
+     */
+    @SidedProxy(serverSide = Reference.SERVER_PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
     public static CommonProxy proxy;
 
     public static BlockFloodgate floodgate;
 
+    /**
+     * Called first. Should initialize everything and register everything
+     * @param event The event (you probably wont use this)
+     */
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+    }
+
+    /**
+     * Called to register recipes and events
+     * @param event The event (you probably wont use this)
+     */
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init();
-        LOGGER.info("Loading " + NAME);
+        LOGGER.info("Loading " + Reference.NAME);
         Config.load();
         initFloodgateBlock();
         initFloodgateRecipe();
@@ -70,6 +83,14 @@ public class FloodgateMod {
             'I', Items.IRON_INGOT,
             'B', Blocks.IRON_BARS
         ));
+    }
+
+    /**
+     * Called after everything. Should be used for mod integration
+     * @param event The event (you probably wont use this)
+     */
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
     }
 
 }

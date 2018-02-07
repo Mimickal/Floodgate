@@ -1,6 +1,7 @@
 package mimickal.mc.floodgate.proxy;
 
-import mimickal.mc.floodgate.FloodgateMod;
+import mimickal.mc.floodgate.Floodgate;
+import mimickal.mc.floodgate.Reference;
 import mimickal.mc.floodgate.client.gui.GuiHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
@@ -14,12 +15,12 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         super.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(FloodgateMod.instance, new GuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(Floodgate.instance, new GuiHandler());
     }
 
     @Override
     public void registerItemRenderer(Item item, int meta, String id) {
-        ModelResourceLocation location = new ModelResourceLocation(FloodgateMod.MOD_ID + ":" + id, "inventory");
+        ModelResourceLocation location = new ModelResourceLocation(Reference.MOD_ID + ":" + id, "inventory");
         ModelLoader.setCustomModelResourceLocation(item, meta, location);
 
         ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
