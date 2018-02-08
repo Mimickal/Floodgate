@@ -1,15 +1,21 @@
-package mimickal.mc.floodgate;
+package mimickal.mc.floodgate.tileentity;
 
 import com.enderio.core.common.fluid.IFluidWrapper;
+import mimickal.mc.floodgate.Config;
+import mimickal.mc.floodgate.client.gui.GuiFloodgate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,6 +26,13 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     private static final int MAX_CAPACITY = Fluid.BUCKET_VOLUME;
 
     private FluidStack heldFluid;
+
+    private ItemStackHandler handler;
+
+    public TileEntityFloodgate() {
+        super();
+        this.handler = new ItemStackHandler(2);
+    }
 
     /*-----------------------------------------------------------------------*
      * IFluidWrapper impl
@@ -56,11 +69,9 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         if (heldFluid == null) {
             amountFilled = Math.min(incomingFluid.amount, MAX_CAPACITY);
             heldFluid = new FluidStack(incomingFluid, amountFilled);
-        }
-        else if (!heldFluid.isFluidEqual(incomingFluid)) {
+        } else if (!heldFluid.isFluidEqual(incomingFluid)) {
             return 0;
-        }
-        else {
+        } else {
             if (heldFluid.amount + incomingFluid.amount >= MAX_CAPACITY) {
                 amountFilled = MAX_CAPACITY - heldFluid.amount;
             } else {
@@ -81,7 +92,7 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     /**
      * The draining version of "offer". Pipes use this function to figure out
      * if they can extract any fluid from the floodgate.
-     *
+     * <p>
      * The floodgate drains itself by placing fluid into the world,
      * therefore it never has any fluid available for draining.
      *
@@ -110,7 +121,6 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     /**
      * FIXME figure out what this actually does
      * Seriously I have no idea.
-     * @return
      */
     @Nonnull
     @Override
@@ -140,10 +150,10 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
      * that is connected through matching fluid source blocks. It allows an
      * arbitrary volume to be filled with fluid source blocks. By searching
      * depth-first, the volume should appear (to players) to fill naturally.
-     *
+     * <p>
      * A list of visited spaces is maintained to avoid circular loops.
      * A stack is used to achieve the depth-first part of the search.
-     *
+     * <p>
      * Everything is thrown out between runs to accommodate for dynamically
      * changing volumes.
      *
@@ -167,8 +177,7 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
                 if (inRange(nextSpot)) {
                     if (this.worldObj.isAirBlock(nextSpot)) {
                         return nextSpot;
-                    }
-                    else if (matchesHeldFluid(nextSpot) && !visited.contains(nextSpot)) {
+                    } else if (matchesHeldFluid(nextSpot) && !visited.contains(nextSpot)) {
 
                         // Fluid flows only through air, so treat flowing fluid as air.
                         if (isFluidFlowing(nextSpot)) {
@@ -194,7 +203,7 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     }
 
     private boolean inRange(BlockPos otherPos) {
-        return  Math.abs(pos.getX() - otherPos.getX()) <= Config.RANGE &&
+        return Math.abs(pos.getX() - otherPos.getX()) <= Config.RANGE &&
                 Math.abs(pos.getY() - otherPos.getY()) <= Config.RANGE &&
                 Math.abs(pos.getZ() - otherPos.getZ()) <= Config.RANGE;
     }
@@ -224,11 +233,11 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         private SearchState(BlockPos pos) {
             this.blockPos = pos;
             directions = new LinkedList<>(Arrays.asList(
-                EnumFacing.DOWN,
-                EnumFacing.NORTH,
-                EnumFacing.SOUTH,
-                EnumFacing.EAST,
-                EnumFacing.WEST
+                    EnumFacing.DOWN,
+                    EnumFacing.NORTH,
+                    EnumFacing.SOUTH,
+                    EnumFacing.EAST,
+                    EnumFacing.WEST
             ));
         }
 
@@ -237,6 +246,38 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
             EnumFacing searchDir = this.directions.poll();
             return searchDir == null ? null : this.blockPos.offset(searchDir);
         }
+    }
+
+    /**
+     * Get all of the capabilities
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return (T) this.handler;
+        return super.getCapability(capability, facing);
+    }
+
+    /**
+     * Say which capabilities the {@link TileEntity} has
+     */
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) ||
+                super.hasCapability(capability, facing);
+    }
+
+    /**
+     * Says whether the player can interact with the block - used for our
+     * {@link GuiFloodgate}
+     *
+     * @param player The player to test
+     * @return If the player can interact with the block
+     */
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return this.worldObj.getTileEntity(this.getPos()) == this
+                && player.getDistanceSq(this.pos.add(0.5, 0.5, 0.5)) <= 64;
     }
 
 }
