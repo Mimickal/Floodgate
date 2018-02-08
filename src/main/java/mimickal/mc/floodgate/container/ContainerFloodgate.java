@@ -22,10 +22,8 @@ public class ContainerFloodgate extends Container {
 
         //Our tile entity slots
         // TODO: this slot is for input
-        this.addSlotToContainer(new SlotItemHandler(handler, 0, 38, 17));
-        this.addSlotToContainer(new SlotItemHandler(handler, 1, 38, 62));
-        this.addSlotToContainer(new SlotItemHandler(handler, 2, 152, 44));
-        this.addSlotToContainer(new SlotItemHandler(handler, 3, 152, 62));
+        this.addSlotToContainer(new SlotItemHandler(handler, 0, 55, 17));
+        this.addSlotToContainer(new SlotItemHandler(handler, 1, 55, 62));
 
 
         //The player's inventory slots
