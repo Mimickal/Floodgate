@@ -1,5 +1,6 @@
 package mimickal.mc.floodgate.container;
 
+import mimickal.mc.floodgate.container.slots.SlotFluid;
 import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -11,6 +12,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import javax.annotation.Nullable;
+
 public class ContainerFloodgate extends Container {
 
     private TileEntityFloodgate te;
@@ -20,11 +23,15 @@ public class ContainerFloodgate extends Container {
         this.te = te;
         this.handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-        //Our tile entity slots
-        // TODO: this slot is for input
-        this.addSlotToContainer(new SlotItemHandler(handler, 0, 55, 17));
-        this.addSlotToContainer(new SlotItemHandler(handler, 1, 55, 62));
-
+        //Fluid Input slot
+        this.addSlotToContainer(new SlotFluid(handler, 0, 55, 17));
+        //Output slot
+        this.addSlotToContainer(new SlotItemHandler(handler, 1, 55, 62){
+            @Override
+            public boolean isItemValid( ItemStack stack ){
+                return false;
+            }
+        });
 
         //The player's inventory slots
         int xPos = 8; //The x position of the top left player inventory slot on our texture
@@ -55,8 +62,9 @@ public class ContainerFloodgate extends Container {
      * TODO: crashes
      */
     @Override
+    @Nullable
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) {
-        ItemStack previous = (ItemStack) null;
+        ItemStack previous = null;
         Slot slot = (Slot) this.inventorySlots.get(fromSlot);
 
         if (slot != null && slot.getHasStack()) {
@@ -66,15 +74,15 @@ public class ContainerFloodgate extends Container {
             if (fromSlot < this.handler.getSlots()) {
                 // From the block breaker inventory to player's inventory
                 if (!this.mergeItemStack(current, handler.getSlots(), handler.getSlots() + 36, true))
-                    return (ItemStack) null;
+                    return null;
             } else {
                 // From the player's inventory to block breaker's inventory
                 if (current.getItem() == Items.ENCHANTED_BOOK) {
                     if (!this.mergeItemStack(current, 9, handler.getSlots(), false))
-                        return (ItemStack) null;
+                        return null;
                 }
                 if (!this.mergeItemStack(current, 0, handler.getSlots(), false))
-                    return (ItemStack) null;
+                    return null;
             }
 
             if (current.stackSize == 0) //Use func_190916_E() instead of stackSize 1.11 only 1.11.2 use getCount()
@@ -83,7 +91,7 @@ public class ContainerFloodgate extends Container {
                 slot.onSlotChanged();
 
             if (current.stackSize == previous.stackSize)
-                return (ItemStack) null;
+                return null;
 
 //            slot.onTake(playerIn, current);
         }

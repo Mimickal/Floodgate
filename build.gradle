@@ -39,10 +39,15 @@ repositories {
         name "tterrag Repo"
         url "http://maven.tterrag.com"
     }
+    maven {
+        name "ic2"
+        url "http://maven.ic2.player.to/"
+    }
 }
 
 dependencies {
     compile 'com.enderio.core:EnderCore:1.10.2-0.4.1.66-beta'
+    compileOnly 'net.industrial-craft:industrialcraft-2:2.6.252-ex110'
 }
 
 processResources {
