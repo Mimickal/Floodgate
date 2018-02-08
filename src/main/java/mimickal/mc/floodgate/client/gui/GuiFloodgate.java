@@ -90,7 +90,8 @@ public class GuiFloodgate extends GuiContainer {
     protected void actionPerformed(GuiButton b)
     {
         switch (b.id) {
-            case 1: // TODO call function in TileEntity
+            case 1:
+                this.te.toggleFgstate();
                 break;
         }
 

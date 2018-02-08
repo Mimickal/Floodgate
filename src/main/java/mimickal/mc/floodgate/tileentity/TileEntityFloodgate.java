@@ -38,12 +38,16 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
         this.fgstate = FGState.ON;
     }
 
+    public FGState getFgstate() {
+        return fgstate;
+    }
+
     public void setFgstate(FGState fgstate) {
         this.fgstate = fgstate;
     }
 
-    public FGState getFgstate() {
-        return fgstate;
+    public void toggleFgstate() {
+        fgstate = fgstate.next();
     }
 
     /*-----------------------------------------------------------------------*
