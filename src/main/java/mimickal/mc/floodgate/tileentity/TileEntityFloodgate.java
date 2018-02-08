@@ -3,6 +3,7 @@ package mimickal.mc.floodgate.tileentity;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import mimickal.mc.floodgate.Config;
 import mimickal.mc.floodgate.client.gui.GuiFloodgate;
+import mimickal.mc.floodgate.enums.FGState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -29,9 +30,20 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
 
     private ItemStackHandler handler;
 
+    private FGState fgstate;
+
     public TileEntityFloodgate() {
         super();
         this.handler = new ItemStackHandler(2);
+        this.fgstate = FGState.ON;
+    }
+
+    public void setFgstate(FGState fgstate) {
+        this.fgstate = fgstate;
+    }
+
+    public FGState getFgstate() {
+        return fgstate;
     }
 
     /*-----------------------------------------------------------------------*

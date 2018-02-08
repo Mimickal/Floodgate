@@ -33,6 +33,7 @@ public class ContainerFloodgate extends Container {
             }
         });
 
+
         //The player's inventory slots
         int xPos = 8; //The x position of the top left player inventory slot on our texture
         int yPos = 84; //The y position of the top left player inventory slot on our texture
@@ -59,7 +60,6 @@ public class ContainerFloodgate extends Container {
 
     /**
      * Called when the player presses shift and takes an item out of the container
-     * TODO: crashes
      */
     @Override
     @Nullable

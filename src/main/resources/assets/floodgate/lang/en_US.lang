@@ -1,2 +1,4 @@
 tile.floodgate.name=Floodgate
 container.floodgate=Floodgate
+
+gui.floodgate.redstone.tooltip=Toggle Powered State
