@@ -36,6 +36,7 @@ public class Floodgate {
 
     /**
      * Called first. Should initialize everything and register everything
+     *
      * @param event The event (you probably wont use this)
      */
     @EventHandler
@@ -50,6 +51,7 @@ public class Floodgate {
 
     /**
      * Called to register recipes and events
+     *
      * @param event The event (you probably wont use this)
      */
     @EventHandler
@@ -61,9 +63,9 @@ public class Floodgate {
         RecipeHandler.registerCraftingRecipes();
     }
 
-
     /**
      * Called after everything. Should be used for mod integration
+     *
      * @param event The event (you probably wont use this)
      */
     @EventHandler

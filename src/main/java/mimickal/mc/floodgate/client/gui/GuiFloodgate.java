@@ -1,19 +1,12 @@
 package mimickal.mc.floodgate.client.gui;
 
-import mimickal.mc.floodgate.Floodgate;
 import mimickal.mc.floodgate.Reference;
 import mimickal.mc.floodgate.container.ContainerFloodgate;
 import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.items.CapabilityItemHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiFloodgate extends GuiContainer {
 

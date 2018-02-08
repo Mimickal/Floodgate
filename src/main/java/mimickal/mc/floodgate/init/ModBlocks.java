@@ -1,11 +1,9 @@
 package mimickal.mc.floodgate.init;
 
-import mimickal.mc.floodgate.Reference;
-import net.minecraft.block.Block;
 import mimickal.mc.floodgate.Floodgate;
+import mimickal.mc.floodgate.Reference;
 import mimickal.mc.floodgate.block.BlockFloodgate;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -26,12 +24,13 @@ public class ModBlocks {
     }
 
     public static void registerRenders() {
-        registerItemRenderer(floodgate,0, BlockFloodgate.NAME);
+        registerItemRenderer(floodgate, 0, BlockFloodgate.NAME);
     }
 
     /**
      * Registers the block with a custom {@link ItemBlock}
-     * @param block The block
+     *
+     * @param block     The block
      * @param itemBlock The {@link ItemBlock}
      */
     public static void registerBlock(Block block, ItemBlock itemBlock) {
@@ -44,8 +43,8 @@ public class ModBlocks {
      * Registers the blocks renders even if it has meta data
      *
      * @param block The block
-     * @param meta The blocks meta data
-     * @param id The file name
+     * @param meta  The blocks meta data
+     * @param id    The file name
      */
     public static void registerItemRenderer(Block block, int meta, String id) {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), meta,

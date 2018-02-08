@@ -1,9 +1,7 @@
 package mimickal.mc.floodgate.proxy;
 
-import mimickal.mc.floodgate.Floodgate;
 import mimickal.mc.floodgate.Reference;
 import mimickal.mc.floodgate.tileentity.TileEntityFloodgate;
-import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
