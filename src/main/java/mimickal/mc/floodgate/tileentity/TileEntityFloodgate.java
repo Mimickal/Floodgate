@@ -108,16 +108,13 @@ public class TileEntityFloodgate extends TileEntity implements IFluidWrapper {
     /**
      * The draining version of "offer". Pipes use this function to figure out
      * if they can extract any fluid from the floodgate.
-     * <p>
-     * The floodgate drains itself by placing fluid into the world,
-     * therefore it never has any fluid available for draining.
      *
      * @return null
      */
     @Nullable
     @Override
     public FluidStack getAvailableFluid() {
-        return null;
+        return heldFluid;
     }
 
     /**

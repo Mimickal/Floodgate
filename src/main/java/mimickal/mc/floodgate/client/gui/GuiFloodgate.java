@@ -65,24 +65,36 @@ public class GuiFloodgate extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+        List<String> text;
 
         // Title of GUI
         this.drawCenteredString(mc.fontRendererObj, TextFormatting.GRAY + I18n.format("container.floodgate"),
                 this.xSize/2, 4, 14737632);
+
+        // Powered State
+        text = new ArrayList<String>();
+        text.add(TextFormatting.GRAY + te.getFgstate().name());
+        this.drawHoveringText(text, 150 - 10,  27 + 15);
 
         // Tool tips
         int actualMouseX = mouseX - ((this.width - this.xSize) / 2);
         int actualMouseY = mouseY - ((this.height - this.ySize) / 2);
 
         if (isPointInRegion(150, 8, 18, 18, mouseX, mouseY)) {
-            List<String> text = new ArrayList<String>();
+            text = new ArrayList<String>();
             text.add(TextFormatting.GRAY + I18n.format("gui.floodgate.redstone.tooltip"));
             this.drawHoveringText(text, actualMouseX, actualMouseY);
         }
 
-        List<String> text = new ArrayList<String>();
-        text.add(TextFormatting.GRAY + te.getFgstate().name());
-        this.drawHoveringText(text, 150 - 10,  27 + 15);
+        if (isPointInRegion(77, 19, 20, 55, mouseX, mouseY)) {
+            text = new ArrayList<String>();
+            if (te.getAvailableFluid() == null)
+                text.add(TextFormatting.GRAY + "Empty");
+            else
+                text.add(TextFormatting.GRAY + Integer.toString(te.getAvailableFluid().amount));
+            this.drawHoveringText(text, actualMouseX, actualMouseY);
+        }
+
     }
 
 
